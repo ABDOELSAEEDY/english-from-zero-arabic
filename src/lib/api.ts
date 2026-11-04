@@ -57,7 +57,11 @@ export function useProgress() {
 export function useStats() {
   return useQuery({
     queryKey: ["stats"],
-    queryFn: async () => check(await supabase.from("user_stats").select("*").eq("user_id", await uid()).maybeSingle()),
+    queryFn: async (): Promise<Tables<"user_stats"> | null> => {
+      const r = await supabase.from("user_stats").select("*").eq("user_id", await uid()).maybeSingle();
+      if (r.error) throw new Error(r.error.message);
+      return r.data;
+    },
   });
 }
 

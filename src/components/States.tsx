@@ -11,7 +11,7 @@ export function LoadingCards({ count = 3 }: { count?: number }) {
   );
 }
 
-export function ErrorState({ message, onRetry }: { message?: string; onRetry?: () => void }) {
+export function ErrorState({ message, onRetry }: { message?: string | undefined; onRetry?: (() => void) | undefined }) {
   return (
     <div role="alert" className="rounded-2xl border border-destructive/30 bg-destructive/5 p-6 text-center">
       <AlertCircle className="mx-auto h-10 w-10 text-destructive" />

@@ -40,7 +40,7 @@ function HomePage() {
   const nextUnit = units.find((u) => u.id === nextId);
   const s = stats.data;
   const level = levels.find((l) => l.id === s?.current_level_id) ?? (nextUnit ? levels.find((l) => l.id === nextUnit.level_id) : levels[0]);
-  const name = (me.data?.user_metadata?.name as string | undefined) || me.data?.email?.split("@")[0] || "";
+  const name = (me.data?.user_metadata?.["name"] as string | undefined) || me.data?.email?.split("@")[0] || "";
 
   return (
     <div className="space-y-5">

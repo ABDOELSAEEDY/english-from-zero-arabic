@@ -13,7 +13,7 @@ describe("unit unlocking", () => {
   });
   it("a test score of 59% does not unlock the next unit", () => {
     const s = computeUnitStatuses(ids, [{ unit_id: "u1", section: "test", completed: true, score: 59 }]);
-    expect(s.u2).toBe("locked");
+    expect(s["u2"]).toBe("locked");
   });
   it("first incomplete unit skips passed ones", () => {
     expect(firstIncompleteUnit(ids, [{ unit_id: "u1", section: "test", completed: true, score: 80 }])).toBe("u2");
