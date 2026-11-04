@@ -8,8 +8,8 @@ import { cn } from "@/lib/utils";
 type Mode = "login" | "signup";
 
 export const Route = createFileRoute("/auth")({
-  validateSearch: (s: Record<string, unknown>): { mode?: Mode } => ({
-    mode: s.mode === "signup" ? "signup" : s.mode === "login" ? "login" : undefined,
+  validateSearch: (s: Record<string, unknown>): { mode?: Mode | undefined } => ({
+    mode: s["mode"] === "signup" ? "signup" : s["mode"] === "login" ? "login" : undefined,
   }),
   head: () => ({
     meta: [
