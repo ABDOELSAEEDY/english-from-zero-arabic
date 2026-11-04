@@ -14,7 +14,7 @@ export function computeUnitStatuses(orderedUnitIds: string[], progress: Progress
   const out: Record<string, UnitStatus> = {};
   orderedUnitIds.forEach((id, i) => {
     if (testPassed(progress, id)) out[id] = "completed";
-    else if (i === 0 || testPassed(progress, orderedUnitIds[i - 1])) out[id] = "unlocked";
+    else if (i === 0 || testPassed(progress, orderedUnitIds[i - 1] ?? "")) out[id] = "unlocked";
     else out[id] = "locked";
   });
   return out;

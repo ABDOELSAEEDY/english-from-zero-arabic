@@ -100,7 +100,7 @@ function VocabTab({ items, onDone }: { items: Vocab[]; onDone: () => void }) {
         <button onClick={() => { setI(0); setFlipped(false); }} className="mt-4 rounded-2xl bg-secondary px-5 py-3 font-bold">راجعهم تاني</button>
       </div>
     );
-  const w = items[i];
+  const w = items[i]!;
   const answer = async (known: boolean) => {
     setBusy(true);
     try {
@@ -213,11 +213,11 @@ function StoryTab({ story, onDone, done }: { story: Story; onDone: () => void; d
   const en = story.body_en.split("\n").map((l) => l.trim()).filter(Boolean);
   const ar = story.body_ar.split("\n").map((l) => l.trim()).filter(Boolean);
   const playAll = async () => {
-    if (!speechSupported()) return toast.error("المتصفح ده مش بيدعم النطق الصوتي.");
+    if (!speechSupported()) { toast.error("المتصفح ده مش بيدعم النطق الصوتي."); return; }
     if (playing !== null) { stopSpeaking(); setPlaying(null); return; }
     for (let k = 0; k < en.length; k++) {
       setPlaying(k);
-      const ok = await speak(en[k]);
+      const ok = await speak(en[k] ?? "");
       if (!ok) break;
     }
     setPlaying(null);
