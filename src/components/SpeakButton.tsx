@@ -34,7 +34,7 @@ export function SpeakButton({ text, className, size = "md" }: { text: string; cl
   );
 }
 
-export function En({ children, className }: { children: React.ReactNode; className?: string }) {
+export function En({ children, className }: { children: React.ReactNode; className?: string | undefined }) {
   return (
     <span dir="ltr" lang="en" className={cn("font-en", className)}>
       {children}

@@ -12,6 +12,7 @@ import { EmptyState, ErrorState, LoadingCards } from "@/components/States";
 import { speak, speechSupported, stopSpeaking } from "@/lib/speech";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
+import { ExercisesPlayer, UnitTestPlayer } from "@/components/Players";
 
 export const Route = createFileRoute("/_authenticated/unit/$unitId")({
   head: () => ({
@@ -67,12 +68,13 @@ function UnitPage() {
           </button>
         ))}
       </div>
-      <div key={tab} className="animate-in fade-in slide-in-from-bottom-2 duration-300">
+      <div key={tab + unitId} className="animate-in fade-in slide-in-from-bottom-2 duration-300">
         {tab === "vocab" && <VocabTab items={c.vocab} onDone={() => complete("vocab")} />}
         {tab === "sentences" && <SentencesTab items={c.sentences} onDone={() => complete("sentences")} done={done.has("sentences")} />}
         {tab === "grammar" && <GrammarTab items={c.grammar} onDone={() => complete("grammar")} done={done.has("grammar")} />}
         {tab === "story" && <StoryTab story={c.story} onDone={() => complete("story")} done={done.has("story")} />}
-        {(tab === "exercises" || tab === "test") && <EntryCard kind={tab} />}
+        {tab === "exercises" && <ExercisesPlayer unitId={unitId} onGoTest={() => setTab("test")} />}
+        {tab === "test" && <UnitTestPlayer unitId={unitId} onBack={() => setTab("vocab")} />}
       </div>
     </div>
   );
@@ -246,13 +248,3 @@ function StoryTab({ story, onDone, done }: { story: Story; onDone: () => void; d
   );
 }
 
-function EntryCard({ kind }: { kind: "exercises" | "test" }) {
-  return (
-    <div className="rounded-3xl border bg-card p-8 text-center">
-      <p className="text-5xl">{kind === "test" ? "🏆" : "✍️"}</p>
-      <h2 className="mt-3 text-xl font-extrabold">{kind === "test" ? "اختبار الوحدة" : "تمارين الوحدة"}</h2>
-      <p className="mt-1 text-muted-foreground">{kind === "test" ? "انجح بـ ٦٠٪ أو أكتر عشان تفتح الوحدة اللي بعدها." : "اتمرن على اللي اتعلمته في الوحدة."}</p>
-      <button onClick={() => toast("الجزء ده هيشتغل في الخطوة الجاية 🚧")} className="mt-5 h-14 w-full rounded-2xl bg-primary text-lg font-bold text-primary-foreground">ابدأ</button>
-    </div>
-  );
-}
