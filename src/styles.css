@@ -183,3 +183,6 @@
 .md th, .md td { border: 1px solid var(--color-border); padding: 0.5rem 0.75rem; text-align: start; }
 .md th { background: var(--color-primary-soft); }
 .md code { font-family: var(--font-en); background: var(--color-muted); padding: 0 0.3rem; border-radius: 0.3rem; }
+
+.confetti { position: absolute; top: -12px; width: 10px; height: 14px; border-radius: 3px; animation: confetti-fall 2.2s ease-in forwards; }
+@keyframes confetti-fall { to { transform: translateY(105vh) rotate(720deg); opacity: 0.6; } }
