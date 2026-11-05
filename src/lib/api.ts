@@ -139,7 +139,9 @@ export function useUnitTest(unitId: string) {
   return useQuery({
     queryKey: ["unit-test", unitId],
     queryFn: async () => {
-      const quiz = check(await supabase.from("quizzes").select("*").eq("unit_id", unitId).eq("kind", "unit_test").limit(1).maybeSingle());
+      const qr = await supabase.from("quizzes").select("*").eq("unit_id", unitId).eq("kind", "unit_test").limit(1).maybeSingle();
+      if (qr.error) throw new Error(qr.error.message);
+      const quiz = qr.data;
       if (!quiz) return { quiz: null, questions: [] };
       const questions = check(await supabase.from("exercises").select("*").eq("quiz_id", quiz.id).order("order_index"));
       return { quiz, questions };

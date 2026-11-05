@@ -28,7 +28,7 @@ const PROMPT: Record<string, string> = {
 
 const hasLatin = (s: string) => /[A-Za-z]/.test(s);
 
-function Txt({ children, className }: { children: string; className?: string }) {
+function Txt({ children, className }: { children: string; className?: string | undefined }) {
   return hasLatin(children) && !/[\u0600-\u06FF]/.test(children) ? <En className={className}>{children}</En> : <span className={className}>{children}</span>;
 }
 
