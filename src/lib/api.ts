@@ -126,3 +126,27 @@ export async function reviewWord(vocabId: string, known: boolean) {
 export async function ensureStats(userId: string) {
   await supabase.from("user_stats").upsert({ user_id: userId }, { onConflict: "user_id", ignoreDuplicates: true });
 }
+
+export function useUnitExercises(unitId: string) {
+  return useQuery({
+    queryKey: ["exercises", unitId],
+    queryFn: async () =>
+      check(await supabase.from("exercises").select("*").eq("unit_id", unitId).is("quiz_id", null).order("order_index")),
+  });
+}
+
+export function useUnitTest(unitId: string) {
+  return useQuery({
+    queryKey: ["unit-test", unitId],
+    queryFn: async () => {
+      const quiz = check(await supabase.from("quizzes").select("*").eq("unit_id", unitId).eq("kind", "unit_test").limit(1).maybeSingle());
+      if (!quiz) return { quiz: null, questions: [] };
+      const questions = check(await supabase.from("exercises").select("*").eq("quiz_id", quiz.id).order("order_index"));
+      return { quiz, questions };
+    },
+  });
+}
+
+export async function awardXp(amount: number, answers: number, correct: number) {
+  check(await supabase.rpc("award_xp", { amount, answers, correct }));
+}
