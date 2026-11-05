@@ -470,6 +470,17 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      seed_unit: {
+        Args: {
+          d: Json
+          p_desc: string
+          p_icon: string
+          p_level: string
+          p_title_ar: string
+          p_title_en: string
+        }
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never
