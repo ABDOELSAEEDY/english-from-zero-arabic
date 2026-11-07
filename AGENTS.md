@@ -12,3 +12,4 @@
 - Placement is a client-only authenticated route using shared QuestionCard and query-cache loaders, because placement saves account-owned stats.
 - Save placement completion and the available starting level together in user_stats; derive home continuation and map access from that level so direct content additions remain data-driven.
 - Scope placement skip storage to the account ID so one learner's dismissal cannot hide another learner's offer.
+- Review sessions snapshot due cards at start so immediately-due hard cards return in the next session, not indefinitely in the current one; refresh review, due-count and stats after each completed card.

@@ -3,7 +3,7 @@ export const TEST_PASS_XP = 50;
 export const REVIEW_XP = 2;
 
 /** Review interval in days for each Leitner box (index = box). */
-export const BOX_INTERVAL_DAYS = [0, 1, 2, 4, 8, 16] as const;
+export const BOX_INTERVAL_DAYS = [0, 0, 1, 2, 4, 8] as const;
 export const MAX_BOX = 5;
 
 export function normalize(s: string): string {
@@ -31,6 +31,7 @@ export function placementLevel(pct: number): "A1" | "A2" | "B1" | "B2" | "C1" {
 export function nextReview(box: number, known: boolean, now = new Date()): { box: number; due: Date } {
   const nb = known ? Math.min(MAX_BOX, Math.max(1, box) + 1) : 1;
   const due = new Date(now);
-  due.setDate(due.getDate() + BOX_INTERVAL_DAYS[nb]!);
+  const days = known && box >= MAX_BOX ? 16 : BOX_INTERVAL_DAYS[nb] ?? 0;
+  due.setTime(due.getTime() + days * 86_400_000);
   return { box: nb, due };
 }
