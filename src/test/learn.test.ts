@@ -21,10 +21,15 @@ describe("answers", () => {
 
 describe("spaced repetition", () => {
   const now = new Date("2026-01-01T00:00:00");
-  it("صعبة resets to box 1 due tomorrow", () => {
+  it("صعبة resets to box 1 due now", () => {
     const r = nextReview(4, false, now);
     expect(r.box).toBe(1);
-    expect(r.due.getDate()).toBe(2);
+    expect(r.due.getTime()).toBe(now.getTime());
+  });
+  it.each([[1, 2, 1], [2, 3, 2], [3, 4, 4], [4, 5, 8], [5, 5, 16]])("easy from box %s goes to %s in %s days", (box, expected, days) => {
+    const r = nextReview(box, true, now);
+    expect(r.box).toBe(expected);
+    expect(r.due.getTime() - now.getTime()).toBe(days * 86_400_000);
   });
   it("تمام moves up one box, capped at 5 (16 days)", () => {
     expect(nextReview(2, true, now).box).toBe(3);
