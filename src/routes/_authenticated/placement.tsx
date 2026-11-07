@@ -23,7 +23,7 @@ export const Route = createFileRoute("/_authenticated/placement")({
   ] }),
   loader: ({ context }) => context.queryClient.ensureQueryData(placementQuestions),
   pendingComponent: () => <LoadingCards count={2} />,
-  errorComponent: ({ error, reset }) => <ErrorState message={error.message} onRetry={reset} />,
+  errorComponent: ({ error, reset }) => <ErrorState message={error instanceof Error ? error.message : "مقدرناش نحمّل الاختبار"} onRetry={reset} />,
   component: PlacementPage,
 });
 

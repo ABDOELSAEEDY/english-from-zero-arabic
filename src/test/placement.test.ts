@@ -39,8 +39,8 @@ describe("placement starting unit", () => {
     const start = placementStart(75, levels, units);
     const index = startIndexFor(units, start.level?.id);
     expect(index).toBe(2);
-    expect(computeUnitStatuses(units.map((u) => u.id), [], index).b1).toBe("unlocked");
-    expect(computeUnitStatuses(units.map((u) => u.id), [], index).b2).toBe("locked");
+    expect(computeUnitStatuses(units.map((u) => u.id), [], index)["b1"]).toBe("unlocked");
+    expect(computeUnitStatuses(units.map((u) => u.id), [], index)["b2"]).toBe("locked");
     expect(firstIncompleteUnit(units.map((u) => u.id), [], index)).toBe("b1");
   });
 });
