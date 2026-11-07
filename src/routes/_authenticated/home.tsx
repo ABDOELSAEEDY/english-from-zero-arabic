@@ -1,9 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Flame, Play, RotateCcw, Star, GraduationCap } from "lucide-react";
 import { useCurriculum, useDueCount, useMe, useProgress, useStats } from "@/lib/api";
-import { firstIncompleteUnit } from "@/lib/progress";
+import { firstIncompleteUnit, startIndexFor } from "@/lib/progress";
 import { ErrorState, LoadingCards } from "@/components/States";
 import { En } from "@/components/SpeakButton";
+import { PlacementOffer } from "@/components/PlacementOffer";
 
 export const Route = createFileRoute("/_authenticated/home")({
   head: () => ({
@@ -35,8 +36,9 @@ function HomePage() {
   if (cur.error || prog.error || stats.error)
     return <ErrorState message={(cur.error ?? prog.error ?? stats.error)?.message} onRetry={() => { cur.refetch(); prog.refetch(); stats.refetch(); }} />;
 
-  const { levels, units } = cur.data!;
-  const nextId = firstIncompleteUnit(units.map((u) => u.id), prog.data ?? []);
+  if (!cur.data) return null;
+  const { levels, units } = cur.data;
+  const nextId = firstIncompleteUnit(units.map((u) => u.id), prog.data ?? [], startIndexFor(units, stats.data?.current_level_id));
   const nextUnit = units.find((u) => u.id === nextId);
   const s = stats.data;
   const level = levels.find((l) => l.id === s?.current_level_id) ?? (nextUnit ? levels.find((l) => l.id === nextUnit.level_id) : levels[0]);
@@ -54,6 +56,8 @@ function HomePage() {
         <Stat icon={<Flame className="h-6 w-6 text-destructive" />} value={s?.streak_days ?? 0} label="يوم متتالي" />
         <Stat icon={<GraduationCap className="h-6 w-6 text-primary" />} value={<En>{level?.code ?? "A1"}</En>} label="مستواك" />
       </div>
+
+      {me.data && <PlacementOffer userId={me.data.id} completed={s?.placement_done ?? false} />}
 
       <div className="bg-hero rounded-3xl p-6 text-primary-foreground shadow-soft">
         {nextUnit ? (

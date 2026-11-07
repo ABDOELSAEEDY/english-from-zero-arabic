@@ -1,8 +1,8 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Check, Lock } from "lucide-react";
 import { toast } from "sonner";
-import { useCurriculum, useProgress } from "@/lib/api";
-import { computeUnitStatuses } from "@/lib/progress";
+import { useCurriculum, useProgress, useStats } from "@/lib/api";
+import { computeUnitStatuses, startIndexFor } from "@/lib/progress";
 import { ErrorState, LoadingCards } from "@/components/States";
 import { En } from "@/components/SpeakButton";
 import { cn } from "@/lib/utils";
@@ -24,12 +24,14 @@ export const Route = createFileRoute("/_authenticated/levels")({
 function LevelsPage() {
   const cur = useCurriculum();
   const prog = useProgress();
+  const stats = useStats();
   const navigate = useNavigate();
-  if (cur.isLoading || prog.isLoading) return <LoadingCards count={5} />;
-  if (cur.error || prog.error) return <ErrorState message={(cur.error ?? prog.error)?.message} onRetry={() => { cur.refetch(); prog.refetch(); }} />;
+  if (cur.isLoading || prog.isLoading || stats.isLoading) return <LoadingCards count={5} />;
+  if (cur.error || prog.error || stats.error) return <ErrorState message={(cur.error ?? prog.error ?? stats.error)?.message} onRetry={() => { cur.refetch(); prog.refetch(); stats.refetch(); }} />;
 
-  const { levels, units } = cur.data!;
-  const status = computeUnitStatuses(units.map((u) => u.id), prog.data ?? []);
+  if (!cur.data) return null;
+  const { levels, units } = cur.data;
+  const status = computeUnitStatuses(units.map((u) => u.id), prog.data ?? [], startIndexFor(units, stats.data?.current_level_id));
 
   return (
     <div className="space-y-8">

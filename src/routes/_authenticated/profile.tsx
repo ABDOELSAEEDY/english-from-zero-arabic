@@ -1,4 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { Button } from "@/components/ui/button";
 import { useMe, useStats } from "@/lib/api";
 import { useSignOut } from "@/components/AppShell";
 
@@ -22,6 +23,7 @@ export const Route = createFileRoute("/_authenticated/profile")({
         <h1 className="text-2xl font-extrabold">حسابي</h1>
         <p dir="ltr" className="font-en text-end text-muted-foreground">{me.data?.email}</p>
         <p>النقاط: <b>{s.data?.xp ?? 0}</b> — السلسلة: <b>{s.data?.streak_days ?? 0}</b> يوم</p>
+        <Button asChild variant="outline" className="h-12 w-full rounded-2xl font-bold"><Link to="/placement">اعمل اختبار تحديد المستوى</Link></Button>
         <button onClick={signOut} className="h-12 w-full rounded-2xl bg-destructive/10 font-bold text-destructive">تسجيل خروج</button>
       </div>
     );
