@@ -15,6 +15,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedDictionaryRouteImport } from './routes/_authenticated/dictionary'
 import { Route as AuthenticatedHomeRouteImport } from './routes/_authenticated/home'
 import { Route as AuthenticatedLevelsRouteImport } from './routes/_authenticated/levels'
+import { Route as AuthenticatedPlacementRouteImport } from './routes/_authenticated/placement'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedReviewRouteImport } from './routes/_authenticated/review'
 import { Route as AuthenticatedUnitUnitIdRouteImport } from './routes/_authenticated/unit.$unitId'
@@ -48,6 +49,11 @@ const AuthenticatedLevelsRoute = AuthenticatedLevelsRouteImport.update({
   path: '/levels',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedPlacementRoute = AuthenticatedPlacementRouteImport.update({
+  id: '/placement',
+  path: '/placement',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
@@ -70,6 +76,7 @@ export interface FileRoutesByFullPath {
   '/dictionary': typeof AuthenticatedDictionaryRoute
   '/home': typeof AuthenticatedHomeRoute
   '/levels': typeof AuthenticatedLevelsRoute
+  '/placement': typeof AuthenticatedPlacementRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/review': typeof AuthenticatedReviewRoute
   '/unit/$unitId': typeof AuthenticatedUnitUnitIdRoute
@@ -80,6 +87,7 @@ export interface FileRoutesByTo {
   '/dictionary': typeof AuthenticatedDictionaryRoute
   '/home': typeof AuthenticatedHomeRoute
   '/levels': typeof AuthenticatedLevelsRoute
+  '/placement': typeof AuthenticatedPlacementRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/review': typeof AuthenticatedReviewRoute
   '/unit/$unitId': typeof AuthenticatedUnitUnitIdRoute
@@ -92,6 +100,7 @@ export interface FileRoutesById {
   '/_authenticated/dictionary': typeof AuthenticatedDictionaryRoute
   '/_authenticated/home': typeof AuthenticatedHomeRoute
   '/_authenticated/levels': typeof AuthenticatedLevelsRoute
+  '/_authenticated/placement': typeof AuthenticatedPlacementRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/review': typeof AuthenticatedReviewRoute
   '/_authenticated/unit/$unitId': typeof AuthenticatedUnitUnitIdRoute
@@ -104,6 +113,7 @@ export interface FileRouteTypes {
     | '/dictionary'
     | '/home'
     | '/levels'
+    | '/placement'
     | '/profile'
     | '/review'
     | '/unit/$unitId'
@@ -114,6 +124,7 @@ export interface FileRouteTypes {
     | '/dictionary'
     | '/home'
     | '/levels'
+    | '/placement'
     | '/profile'
     | '/review'
     | '/unit/$unitId'
@@ -125,6 +136,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dictionary'
     | '/_authenticated/home'
     | '/_authenticated/levels'
+    | '/_authenticated/placement'
     | '/_authenticated/profile'
     | '/_authenticated/review'
     | '/_authenticated/unit/$unitId'
@@ -180,6 +192,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedLevelsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/placement': {
+      id: '/_authenticated/placement'
+      path: '/placement'
+      fullPath: '/placement'
+      preLoaderRoute: typeof AuthenticatedPlacementRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/profile': {
       id: '/_authenticated/profile'
       path: '/profile'
@@ -208,6 +227,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedDictionaryRoute: typeof AuthenticatedDictionaryRoute
   AuthenticatedHomeRoute: typeof AuthenticatedHomeRoute
   AuthenticatedLevelsRoute: typeof AuthenticatedLevelsRoute
+  AuthenticatedPlacementRoute: typeof AuthenticatedPlacementRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedReviewRoute: typeof AuthenticatedReviewRoute
   AuthenticatedUnitUnitIdRoute: typeof AuthenticatedUnitUnitIdRoute
@@ -217,6 +237,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDictionaryRoute: AuthenticatedDictionaryRoute,
   AuthenticatedHomeRoute: AuthenticatedHomeRoute,
   AuthenticatedLevelsRoute: AuthenticatedLevelsRoute,
+  AuthenticatedPlacementRoute: AuthenticatedPlacementRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedReviewRoute: AuthenticatedReviewRoute,
   AuthenticatedUnitUnitIdRoute: AuthenticatedUnitUnitIdRoute,

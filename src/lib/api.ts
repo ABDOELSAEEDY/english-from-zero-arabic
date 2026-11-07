@@ -40,7 +40,7 @@ export function useCurriculum() {
       const us = check(units);
       const levelOrder = new Map(ls.map((l) => [l.id, l.order_index]));
       const ordered = [...us].sort(
-        (a, b) => (levelOrder.get(a.level_id)! - levelOrder.get(b.level_id)!) || a.order_index - b.order_index,
+        (a, b) => ((levelOrder.get(a.level_id) ?? 0) - (levelOrder.get(b.level_id) ?? 0)) || a.order_index - b.order_index,
       );
       return { levels: ls, units: ordered };
     },

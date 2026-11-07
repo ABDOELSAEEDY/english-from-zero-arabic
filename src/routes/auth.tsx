@@ -4,6 +4,7 @@ import { Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { cn } from "@/lib/utils";
+import { arabicAuthError } from "@/lib/auth-errors";
 
 type Mode = "login" | "signup";
 
@@ -23,18 +24,6 @@ export const Route = createFileRoute("/auth")({
   }),
   component: AuthPage,
 });
-
-function arabicError(msg: string): string {
-  const m = msg.toLowerCase();
-  if (m.includes("invalid login")) return "الإيميل أو كلمة السر غلط. اتأكد وحاول تاني.";
-  if (m.includes("already registered") || m.includes("already been registered")) return "الإيميل ده مسجّل قبل كده. جرّب تسجّل دخول.";
-  if (m.includes("password") && (m.includes("6") || m.includes("short") || m.includes("weak"))) return "كلمة السر ضعيفة. خليها ٦ حروف على الأقل.";
-  if (m.includes("pwned") || m.includes("leaked") || m.includes("compromised")) return "كلمة السر دي معروفة ومش آمنة. اختار كلمة سر تانية.";
-  if (m.includes("email") && m.includes("invalid")) return "الإيميل مكتوب غلط.";
-  if (m.includes("rate") || m.includes("too many")) return "محاولات كتير. استنى شوية وحاول تاني.";
-  if (m.includes("fetch") || m.includes("network")) return "في مشكلة في الاتصال بالإنترنت.";
-  return "حصلت مشكلة. حاول تاني.";
-}
 
 function AuthPage() {
   const search = Route.useSearch();
@@ -69,7 +58,7 @@ function AuthPage() {
       }
       navigate({ to: "/home", replace: true });
     } catch (err) {
-      setError(arabicError(err instanceof Error ? err.message : String(err)));
+      setError(arabicAuthError(err instanceof Error ? err.message : String(err), password.length));
     } finally {
       setLoading(false);
     }
